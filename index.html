@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma de Innovación Digital</title>
+    <title>Lean Canvas - Innovación Digital</title>
     <style>
         * {
             margin: 0;
@@ -72,7 +72,7 @@
 
         nav {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             max-width: 1200px;
             margin: 0 auto;
@@ -83,6 +83,24 @@
             font-weight: bold;
             color: #64ffda;
             text-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #64ffda;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
         }
 
         /* Main Content */
@@ -304,6 +322,10 @@
                 font-size: 2.5rem;
             }
             
+            .nav-links {
+                display: none;
+            }
+            
             .cards-container {
                 grid-template-columns: 1fr;
                 padding: 2rem 1rem;
@@ -354,22 +376,28 @@
 
     <header>
         <nav>
-            <div class="logo">Innovación Digital</div>
+            <div class="logo">Lean Canvas Pro</div>
+            <ul class="nav-links">
+                <li><a href="#home">Inicio</a></li>
+                <li><a href="#about">Acerca</a></li>
+                <li><a href="#services">Servicios</a></li>
+                <li><a href="#contact">Contacto</a></li>
+            </ul>
         </nav>
     </header>
 
     <main>
         <section class="hero" id="home">
-            <h1>Plataforma de Innovación Digital</h1>
-            <p>Transforma tus ideas en soluciones innovadoras con herramientas avanzadas para desarrollo de software y ciberseguridad.</p>
+            <h1>Lean Canvas Digital</h1>
+            <p>Revoluciona tu modelo de negocio con herramientas avanzadas para desarrollo de software y ciberseguridad. Transforma ideas en soluciones innovadoras.</p>
         </section>
 
         <section class="lean-canvas-info">
-            <h2>¿Qué es nuestra metodología?</h2>
+            <h2>¿Qué es Lean Canvas?</h2>
             <div class="lean-canvas-description">
-                <p>Nuestra metodología es una herramienta de planificación estratégica diseñada para startups y proyectos ágiles. Se enfoca en identificar problemas clave, diseñar soluciones efectivas, definir segmentos de clientes y destacar ventajas competitivas.</p>
+                <p>Lean Canvas es una herramienta de planificación estratégica adaptada del Business Model Canvas, diseñada específicamente para startups y proyectos ágiles. Se enfoca en los aspectos más críticos del negocio: el problema, la solución, los segmentos de clientes clave y las ventajas competitivas únicas.</p>
                 <br>
-                <p>Hemos adaptado esta metodología para optimizar el desarrollo de sistemas de software y soluciones de ciberseguridad, permitiendo una validación rápida de hipótesis y una iteración continua basada en feedback real del mercado.</p>
+                <p>En el contexto digital actual, hemos adaptado esta metodología para optimizar el desarrollo de sistemas de software y soluciones de ciberseguridad, permitiendo una validación rápida de hipótesis y una iteración continua basada en feedback real del mercado.</p>
             </div>
         </section>
 
@@ -377,7 +405,7 @@
             <div class="card">
                 <div class="card-icon">💻</div>
                 <h3>Desarrollo de Software</h3>
-                <p>Sistemas robustos y escalables diseñados con metodologías ágiles. Desde aplicaciones web hasta soluciones empresariales complejas, utilizamos las últimas tecnologías para impulsar tu negocio.</p>
+                <p>Sistemas robustos y escalables diseñados con metodologías ágiles. Desde aplicaciones web hasta soluciones empresariales complejas, utilizamos las últimas tecnologías para crear software que impulse tu negocio.</p>
                 <button class="btn" onclick="navigateToSoftware()">
                     <span>Explorar Software</span>
                 </button>
@@ -386,7 +414,7 @@
             <div class="card">
                 <div class="card-icon">🛡️</div>
                 <h3>Ciberseguridad</h3>
-                <p>Protección integral para tu infraestructura digital. Implementamos sistemas de seguridad avanzados, auditorías de vulnerabilidades y estrategias de respuesta ante incidentes.</p>
+                <p>Protección integral para tu infraestructura digital. Implementamos sistemas de seguridad avanzados, auditorías de vulnerabilidades y estrategias de respuesta ante incidentes para mantener tu información segura.</p>
                 <button class="btn" onclick="navigateToCybersecurity()">
                     <span>Explorar Seguridad</span>
                 </button>
@@ -394,10 +422,10 @@
 
             <div class="card">
                 <div class="card-icon">📊</div>
-                <h3>Herramienta Interactiva</h3>
-                <p>Utiliza nuestra plataforma digital para crear, modificar y colaborar en tiempo real en tu modelo de negocio. Visualiza y toma decisiones informadas con datos en tiempo real.</p>
+                <h3>Canvas Interactivo</h3>
+                <p>Utiliza nuestra plataforma digital para crear, modificar y colaborar en tiempo real en tu Lean Canvas. Visualiza tu modelo de negocio y toma decisiones informadas con datos en tiempo real.</p>
                 <button class="btn" onclick="navigateToCanvas()">
-                    <span>Crear Modelo</span>
+                    <span>Crear Canvas</span>
                 </button>
             </div>
         </section>
@@ -433,7 +461,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 Innovación Digital. Transformando el futuro.</p>
+        <p>&copy; 2025 Lean Canvas Pro. Innovando el futuro digital.</p>
     </footer>
 
     <script>
@@ -474,28 +502,51 @@
             }
         });
 
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
         // Navigation functions with page transition effects
         function navigateToSoftware() {
+            // Add transition effect
             document.body.style.transform = 'translateX(-100%)';
             document.body.style.transition = 'transform 0.5s ease';
+            
             setTimeout(() => {
+                // Redirect to software development page
                 window.location.href = 'software.html';
             }, 500);
         }
 
         function navigateToCybersecurity() {
+            // Add transition effect
             document.body.style.transform = 'translateX(-100%)';
             document.body.style.transition = 'transform 0.5s ease';
+            
             setTimeout(() => {
+                // Redirect to cybersecurity page
                 window.location.href = 'cybersecurity.html';
             }, 500);
         }
 
         function navigateToCanvas() {
+            // Add transition effect
             document.body.style.transform = 'scale(0.8)';
             document.body.style.transition = 'transform 0.5s ease';
+            
             setTimeout(() => {
-                window.location.href = 'Lean Canvas.html';
+                // Redirect to interactive canvas page
+                window.location.href = 'canvas.html';
             }, 500);
         }
 
