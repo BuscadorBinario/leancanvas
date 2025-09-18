@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield Pro - Sistema de Ciberseguridad</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2b6cb0 0%, #2c5282 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            color: #4a5568;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #2b6cb0, #2c5282);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            text-align: center;
+            color: #718096;
+            font-size: 1.2em;
+        }
+
+        .header-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-tab:hover {
+            background: #2b6cb0;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(45deg, #2b6cb0, #2c5282);
+            color: white;
+        }
+
+        .sub-nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .sub-nav-tab {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sub-nav-tab:hover {
+            background: #2b6cb0;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .sub-nav-tab.active {
+            background: linear-gradient(45deg, #2b6cb0, #2c5282);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .sub-tab-content {
+            display: none;
+        }
+
+        .sub-tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .grid {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+        .grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 12px;
+        }
+
+        .icon-blue { background: #2b6cb0; }
+        .icon-green { background: #48bb78; }
+        .icon-purple { background: #9f7aea; }
+        .icon-orange { background: #ed8936; }
+        .icon-red { background: #f56565; }
+        .icon-teal { background: #38b2ac; }
+
+        .metric-card {
+            text-align: center;
+            background: linear-gradient(135deg, #2b6cb0 0%, #2c5282 100%);
+            color: white;
+        }
+
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2b6cb0, #2c5282);
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #2b6cb0, #2c5282);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(43, 108, 176, 0.4);
+        }
+
+        .btn-secondary {
+            background: #718096;
+        }
+
+        .btn-success {
+            background: #48bb78;
+        }
+
+        .btn-danger {
+            background: #f56565;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #2b6cb0;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-active { background: #c6f6d5; color: #22543d; }
+        .status-pending { background: #fef5e7; color: #c05621; }
+        .status-completed { background: #bee3f8; color: #2a69ac; }
+
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .kanban-column {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 400px;
+        }
+
+        .kanban-header {
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .kanban-task {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            cursor: move;
+            transition: transform 0.2s ease;
+        }
+
+        .kanban-task:hover {
+            transform: scale(1.02);
+        }
+
+        .chart-container {
+            height: 300px;
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .team-member {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #2b6cb0, #2c5282);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #48bb78;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header { padding: 20px; }
+            .header h1 { font-size: 2em; }
+            .nav-tabs, .sub-nav-tabs { justify-content: center; }
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .chart-container { height: 250px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ CyberShield Pro</h1>
+            <p>Sistema Integral de Ciberseguridad - Implementación Lean Canvas</p>
+            <div class="header-buttons">
+                <button class="btn" onclick="descargarPNG()">Descargar PNG</button>
+                <button class="btn" onclick="descargarPDF()">Descargar PDF</button>
+                <button class="btn btn-secondary" onclick="volverInicio()">Volver al Inicio</button>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="mostrarTab('tablero')">📊 Tablero</button>
+            <button class="nav-tab" onclick="mostrarTab('incidentes')">🚨 Incidentes</button>
+            <button class="nav-tab" onclick="mostrarTab('estrategias')">⚡ Estrategias</button>
+            <button class="nav-tab" onclick="mostrarTab('metricas')">📈 Métricas</button>
+            <button class="nav-tab" onclick="mostrarTab('equipo')">👥 Equipo</button>
+            <button class="nav-tab" onclick="mostrarTab('automatizacion')">🤖 Automatización</button>
+            <button class="nav-tab" onclick="mostrarTab('clientes')">🎯 Clientes</button>
+        </div>
+
+        <!-- Tablero Tab -->
+        <div id="tablero" class="tab-content active">
+            <div class="grid grid-4">
+                <div class="card metric-card">
+                    <h3><span class="icon icon-blue">⏱️</span>Tiempo de Respuesta</h3>
+                    <div class="metric-value" id="tiempoRespuesta">1.5</div>
+                    <div class="metric-label">horas promedio a incidentes</div>
+                </div>
+                <div class="card metric-card">
+                    <h3><span class="icon icon-green">✅</span>Tasa de Detección</h3>
+                    <div class="metric-value" id="tasaDeteccion">98.5</div>
+                    <div class="metric-label">% amenazas detectadas</div>
+                </div>
+                <div class="card metric-card">
+                    <h3><span class="icon icon-purple">🎯</span>Nivel de Cumplimiento</h3>
+                    <div class="metric-value" id="cumplimiento">95</div>
+                    <div class="metric-label">% normas de seguridad</div>
+                </div>
+                <div class="card metric-card">
+                    <h3><span class="icon icon-orange">😊</span>Puntuación de Satisfacción</h3>
+                    <div class="metric-value" id="satisfaccion">92</div>
+                    <div class="metric-label">satisfacción del cliente</div>
+                </div>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3><span class="icon icon-blue">📊</span>Estado de Incidentes</h3>
+                    <div class="chart-container">
+                        <canvas id="estadoIncidentesChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3><span class="icon icon-green">🔄</span>Actividad Reciente</h3>
+                    <div style="max-height: 250px; overflow-y: auto;" id="actividadReciente">
+                        <div class="team-member">
+                            <div class="avatar">JD</div>
+                            <div>
+                                <strong>Incidente resuelto</strong><br>
+                                <small>Amenaza de Phishing - hace 2 horas</small>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="avatar">MS</div>
+                            <div>
+                                <strong>Escaneo completado</strong><br>
+                                <small>Red Interna - hace 4 horas</small>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="avatar">AR</div>
+                            <div>
+                                <strong>Vulnerabilidad parcheada</strong><br>
+                                <small>Sistema Operativo - hace 6 horas</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Incidentes Tab -->
+        <div id="incidentes" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 20px; flex-wrap: wrap;">
+                <h2>🚨 Gestión de Incidentes</h2>
+                <button class="btn" onclick="crearIncidente()">+ Nuevo Incidente</button>
+            </div>
+
+            <div class="kanban-board" id="kanbanBoard">
+                <div class="kanban-column" id="pendientesColumn">
+                    <div class="kanban-header">📋 Pendientes</div>
+                    <div class="kanban-task" draggable="true">
+                        <strong>Intento de Intrusión</strong><br>
+                        <small>Cliente: SecureCorp</small><br>
+                        <span class="status-badge status-pending">Detectado</span>
+                    </div>
+                    <div class="kanban-task" draggable="true">
+                        <strong>Amenaza Ransomware</strong><br>
+                        <small>Cliente: DataSafe</small><br>
+                        <span class="status-badge status-pending">Análisis</span>
+                    </div>
+                </div>
+                <div class="kanban-column" id="investigacionColumn">
+                    <div class="kanban-header">⚡ En Investigación</div>
+                    <div class="kanban-task" draggable="true">
+                        <strong>Fuga de Datos</strong><br>
+                        <small>Fase 3/5</small><br>
+                        <span class="status-badge status-active">Investigando</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    <div class="kanban-task" draggable="true">
+                        <strong>Ataque DDoS</strong><br>
+                        <small>Fase 2/4</small><br>
+                        <span class="status-badge status-active">Mitigando</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 45%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="kanban-column" id="mitigacionColumn">
+                    <div class="kanban-header">🔍 Mitigación</div>
+                    <div class="kanban-task" draggable="true">
+                        <strong>Vulnerabilidad Zero-Day</strong><br>
+                        <small>En proceso</small><br>
+                        <span class="status-badge status-active">Control de Daños</span>
+                    </div>
+                </div>
+                <div class="kanban-column" id="resueltosColumn">
+                    <div class="kanban-header">✅ Resueltos</div>
+                    <div class="kanban-task" draggable="true">
+                        <strong>Análisis de Malware</strong><br>
+                        <small>Resuelto exitosamente</small><br>
+                        <span class="status-badge status-completed">Completado</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estrategias Tab -->
+        <div id="estrategias" class="tab-content">
+            <h2>⚡ Estrategias de Ciberseguridad</h2>
+            <div class="sub-nav-tabs">
+                <button class="sub-nav-tab active" onclick="mostrarSubTab('firewall')">🛡️ Firewall/IDS</button>
+                <button class="sub-nav-tab" onclick="mostrarSubTab('devsecops')">🔄 DevSecOps</button>
+                <button class="sub-nav-tab" onclick="mostrarSubTab('zeroTrust')">🏗️ Zero Trust</button>
+                <button class="sub-nav-tab" onclick="mostrarSubTab('cloudSecurity')">☁️ Seguridad Cloud</button>
+            </div>
+
+            <div id="firewall" class="sub-tab-content active">
+                <div class="card">
+                    <h3><span class="icon icon-blue">🛡️</span>Firewall/IDS</h3>
+                    <p><strong>Implementación:</strong> Monitoreo en tiempo real</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="firewallProgress" style="width: 90%"></div>
+                    </div>
+                    <p><small>Adopción: <span id="firewallAdoption">90</span>% - <span id="firewallSistemas">8</span> sistemas activos</small></p>
+                    <button class="btn btn-secondary" onclick="gestionarFirewall()">Gestionar Firewall</button>
+                </div>
+            </div>
+
+            <div id="devsecops" class="sub-tab-content">
+                <div class="card">
+                    <h3><span class="icon icon-green">🔄</span>DevSecOps e Integración Continua</h3>
+                    <p><strong>Pipeline:</strong> Seguridad integrada en CI/CD</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="devsecopsProgress" style="width: 85%"></div>
+                    </div>
+                    <p><small>Cobertura: <span id="devsecopsCoverage">85</span>% - <span id="devsecopsProyectos">12</span> proyectos integrados</small></p>
+                    <button class="btn btn-secondary" onclick="gestionarPipeline()">Ver Pipeline</button>
+                </div>
+            </div>
+
+            <div id="zeroTrust" class="sub-tab-content">
+                <div class="card">
+                    <h3><span class="icon icon-purple">🏗️</span>Arquitectura Zero Trust</h3>
+                    <p><strong>Arquitectura:</strong> Verificación continua</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="zeroTrustProgress" style="width: 75%"></div>
+                    </div>
+                    <p><small>Migración: <span id="zeroTrustMigration">75</span>% - <span id="zeroTrustSistemas">6</span> sistemas modernizados</small></p>
+                    <button class="btn btn-secondary" onclick="gestionarArquitectura()">Ver Arquitectura</button>
+                </div>
+            </div>
+
+            <div id="cloudSecurity" class="sub-tab-content">
+                <div class="card">
+                    <h3><span class="icon icon-teal">☁️</span>Seguridad Cloud-Native</h3>
+                    <p><strong>Plataformas:</strong> AWS, Azure, Google Cloud</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="cloudProgress" style="width: 80%"></div>
+                    </div>
+                    <p><small>Escalabilidad: <span id="cloudScalability">80</span>% - Infraestructura segura</small></p>
+                    <button class="btn btn-secondary" onclick="gestionarCloud()">Panel Cloud</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Métricas Tab -->
+        <div id="metricas" class="tab-content">
+            <h2>📈 Métricas Clave</h2>
+            <div class="grid grid-3">
+                <div class="card">
+                    <h3><span class="icon icon-blue">⏱️</span>Tiempo de Respuesta</h3>
+                    <div class="metric-value" style="color: #2b6cb0; font-size: 1.8em;" id="metricasTiempoRespuesta">1.5 hrs</div>
+                    <p>Tiempo promedio a incidentes (objetivo: <2 hrs)</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="metricasRespuestaProgress" style="width: 85%"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-red">🐛</span>Tasa de Amenazas</h3>
+                    <div class="metric-value" style="color: #f56565; font-size: 1.8em;" id="metricasTasaAmenazas">0.5%</div>
+                    <p>Amenazas no detectadas (objetivo: <1%)</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="metricasAmenazasProgress" style="width: 20%"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-green">🚀</span>Eficacia de Detección</h3>
+                    <div class="metric-value" style="color: #48bb78; font-size: 1.8em;" id="metricasDeteccion">98 SP</div>
+                    <p>Porcentaje de detección</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="metricasDeteccionProgress" style="width: 95%"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-purple">⚡</span>Tiempo de Recuperación</h3>
+                    <div class="metric-value" style="color: #9f7aea; font-size: 1.8em;" id="metricasRecuperacion">0.8 hrs</div>
+                    <p>Tiempo medio de recuperación ante fallos</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="metricasRecuperacionProgress" style="width: 75%"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-orange">😊</span>Satisfacción del Cliente</h3>
+                    <div class="metric-value" style="color: #ed8936; font-size: 1.8em;" id="metricasSatisfaccion">92 NPS</div>
+                    <p>Puntuación de Promotor Neto</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="metricasNPSProgress" style="width: 85%"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-teal">💰</span>ROI en Seguridad</h3>
+                    <div class="metric-value" style="color: #38b2ac; font-size: 1.8em;" id="metricasROI">450%</div>
+                    <p>Retorno de inversión en medidas de seguridad</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="metricasROIProgress" style="width: 90%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+                <h3><span class="icon icon-blue">📊</span>Panel de Métricas en Tiempo Real</h3>
+                <div class="chart-container">
+                    <canvas id="tendenciasRendimientoChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Equipo Tab -->
+        <div id="equipo" class="tab-content">
+            <h2>👥 Equipo de Ciberseguridad</h2>
+            <div class="grid grid-3">
+                <div class="card">
+                    <h3><span class="icon icon-blue">💻</span>Analistas Senior</h3>
+                    <div class="team-member">
+                        <div class="avatar">JS</div>
+                        <div>
+                            <strong>Juan Silva</strong><br>
+                            <small>Analista de Amenazas</small><br>
+                            <span class="status-badge status-active">Disponible</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar">MR</div>
+                        <div>
+                            <strong>María Rodríguez</strong><br>
+                            <small>Especialista en Encriptación</small><br>
+                            <span class="status-badge status-active">En incidente</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar">CA</div>
+                        <div>
+                            <strong>Carlos Andrade</strong><br>
+                            <small>Ingeniero de Seguridad</small><br>
+                            <span class="status-badge status-completed">Capacitación</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-green">🎯</span>Especialistas</h3>
+                    <div class="team-member">
+                        <div class="avatar">LP</div>
+                        <div>
+                            <strong>Laura Pérez</strong><br>
+                            <small>Experta en Forense Digital</small><br>
+                            <span class="status-badge status-active">Disponible</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar">RG</div>
+                        <div>
+                            <strong>Roberto García</strong><br>
+                            <small>Automatización de Seguridad</small><br>
+                            <span class="status-badge status-active">Monitoreando</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar">SF</div>
+                        <div>
+                            <strong>Sofia Fernández</strong><br>
+                            <small>Analista de Riesgos</small><br>
+                            <span class="status-badge status-pending">Planificando</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-purple">🏆</span>Capacidades</h3>
+                    <div style="space-y: 10px;">
+                        <div>
+                            <strong>Tecnologías Emergentes</strong>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="techEmergentesProgress" style="width: 95%"></div>
+                            </div>
+                            <small>IA en Seguridad, Blockchain, IoT Seguro</small>
+                        </div>
+                        <div>
+                            <strong>Metodología Probada</strong>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="metodologiaProgress" style="width: 90%"></div>
+                            </div>
+                            <small>+<span id="proyectosExitosos">100</span> incidentes resueltos</small>
+                        </div>
+                        <div>
+                            <strong>Socios Exclusivos</strong>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="sociosProgress" style="width: 85%"></div>
+                            </div>
+                            <small>AWS, Microsoft, Google</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-2" style="margin-top: 20px;">
+                <div class="card">
+                    <h3><span class="icon icon-orange">📊</span>Estructura de Costos</h3>
+                    <div class="chart-container">
+                        <canvas id="estructuraCostosChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-teal">💡</span>Flujos de Ingresos</h3>
+                    <div>
+                        <p><strong>🎯 Servicios de Seguridad a Medida</strong></p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="serviciosMedidaProgress" style="width: 45%"></div>
+                        </div>
+                        
+                        <p><strong>🔄 Suscripciones Mensuales de Monitoreo</strong></p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="suscripcionesProgress" style="width: 30%"></div>
+                        </div>
+                        
+                        <p><strong>📚 Licencias de Herramientas Propias</strong></p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="licenciasProgress" style="width: 15%"></div>
+                        </div>
+                        
+                        <p><strong>🎓 Consultoría y Auditorías de Seguridad</strong></p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="consultoriaProgress" style="width: 10%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Automatización Tab -->
+        <div id="automatizacion" class="tab-content">
+            <h2>🤖 Automatización de Seguridad</h2>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3><span class="icon icon-blue">🔄</span>Pipeline de Detección Continua</h3>
+                    <div class="team-member">
+                        <div class="avatar">✅</div>
+                        <div>
+                            <strong>Detección Automatizada</strong><br>
+                            <small>Escaneo de vulnerabilidades</small><br>
+                            <span class="status-badge status-completed">Activo</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar">🧪</div>
+                        <div>
+                            <strong>Pruebas de Penetración</strong><br>
+                            <small>Simulaciones automáticas</small><br>
+                            <span class="status-badge status-active">Ejecutando</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar">🚀</div>
+                        <div>
+                            <strong>Respuesta Automática</strong><br>
+                            <small>Acciones de mitigación</small><br>
+                            <span class="status-badge status-completed">Completado</span>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="ejecutarPipeline()">Ejecutar Pipeline</button>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-green">🧪</span>Pruebas y Control de Seguridad</h3>
+                    <div>
+                        <p><strong>Cobertura de Escaneo:</strong> <span id="coberturaEscaneo">92</span>%</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="coberturaEscaneoProgress" style="width: 92%"></div>
+                        </div>
+                        
+                        <p><strong>Pruebas Automatizadas:</strong> <span id="pruebasAutomatizadas">1,247</span> casos</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="pruebasAutomatizadasProgress" style="width: 85%"></div>
+                        </div>
+                        
+                        <p><strong>Pruebas de Rendimiento:</strong> Activo</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="pruebasRendimientoProgress" style="width: 78%"></div>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" onclick="ejecutarPruebas()">Ejecutar Pruebas</button>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-purple">☁️</span>Plataformas de Seguridad Cloud</h3>
+                    <div class="grid grid-3" style="gap: 10px;">
+                        <div style="text-align: center; padding: 20px; background: #f0f8ff; border-radius: 8px;">
+                            <strong>AWS Security</strong><br>
+                            <span class="status-badge status-active">Activo</span>
+                        </div>
+                        <div style="text-align: center; padding: 20px; background: #f0f8ff; border-radius: 8px;">
+                            <strong>Azure Sentinel</strong><br>
+                            <span class="status-badge status-active">Activo</span>
+                        </div>
+                        <div style="text-align: center; padding: 20px; background: #f0f8ff; border-radius: 8px;">
+                            <strong>Google Cloud Armor</strong><br>
+                            <span class="status-badge status-completed">Configurado</span>
+                        </div>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Escalabilidad Automática:</strong> Kubernetes + Docker Seguro</p>
+                    <p><strong>Monitoreo:</strong> Prometheus + Grafana + ELK Stack</p>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-orange">⚡</span>Métricas de Seguridad</h3>
+                    <div class="chart-container" style="height: 150px;">
+                        <canvas id="metricasSeguridadChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clientes Tab -->
+        <div id="clientes" class="tab-content">
+            <h2>🎯 Segmentos de Clientes</h2>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3><span class="icon icon-blue">🏢</span>Startups en Crecimiento</h3>
+                    <p><strong>En crecimiento:</strong> Necesitan protección rápida y escalable</p>
+                    <div class="team-member">
+                        <div class="avatar">ST</div>
+                        <div>
+                            <strong>TecnoInicio S.A.</strong><br>
+                            <small>Plataforma SaaS - <span id="usuariosSaaS">50</span> usuarios protegidos</small><br>
+                            <span class="status-badge status-active">Crecimiento</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar">IN</div>
+                        <div>
+                            <strong>InnovaLab</strong><br>
+                            <small>Validación de seguridad</small><br>
+                            <span class="status-badge status-pending">Implementación</span>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="agregarCliente()">+ Agregar Cliente</button>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-green">🔄</span>Empresas en Transformación Digital</h3>
+                    <p><strong>Modernización:</strong> Migración segura de sistemas legacy</p>
+                    <div class="team-member">
+                        <div class="avatar">BC</div>
+                        <div>
+                            <strong>BancoCorp</strong><br>
+                            <small>Migración segura bancaria</small><br>
+                            <span class="status-badge status-active">En progreso</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar">RT</div>
+                        <div>
+                            <strong>VentasTech</strong><br>
+                            <small>E-commerce seguro</small><br>
+                            <span class="status-badge status-completed">Completado</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-purple">🛒</span>Fintech y E-commerce Emergentes</h3>
+                    <p><strong>Emergentes:</strong> Soluciones robustas contra fraudes</p>
+                    <div class="team-member">
+                        <div class="avatar">EC</div>
+                        <div>
+                            <strong>CentroComercio</strong><br>
+                            <small>Marketplace Seguro B2B</small><br>
+                            <span class="status-badge status-active">Implementación</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar">FP</div>
+                        <div>
+                            <strong>FinPagos</strong><br>
+                            <small>Pasarela de pagos segura</small><br>
+                            <span class="status-badge status-pending">Planificado</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-orange">🏭</span>Corporaciones con Sistemas Legacy</h3>
+                    <p><strong>Sistemas Heredados:</strong> Modernización y protección</p>
+                    <div class="team-member">
+                        <div class="avatar">MC</div>
+                        <div>
+                            <strong>ManufacturaCorp</strong><br>
+                            <small>Seguridad de ERP</small><br>
+                            <span class="status-badge status-active">Fase 2</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar">LC</div>
+                        <div>
+                            <strong>LogísticaCorp</strong><br>
+                            <small>Seguridad en cadena de suministro</small><br>
+                            <span class="status-badge status-completed">Entregado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-3" style="margin-top: 20px;">
+                <div class="card">
+                    <h3><span class="icon icon-teal">🤝</span>Propuesta de Valor Única</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>✅ <strong>Reducción de tiempo de respuesta hasta <span id="tiempoMercado">60</span>%</strong></li>
+                        <li>✅ <strong>Reducción de amenazas <span id="reduccionAmenazas">80</span>%</strong></li>
+                        <li>✅ <strong>Escalabilidad automática de seguridad</strong></li>
+                        <li>✅ <strong>Experiencia segura superior</strong></li>
+                        <li>✅ <strong>ROI medible en cada evaluación</strong></li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-red">💡</span>Ventaja Competitiva</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>🎯 <strong>Equipo certificado en ciberseguridad</strong></li>
+                        <li>🎯 <strong>Framework propietario de defensa</strong></li>
+                        <li>🎯 <strong>Partnerships exclusivos con providers</strong></li>
+                        <li>🎯 <strong>Metodología probada en +<span id="proyectosProbados">100</span> casos</strong></li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon icon-purple">📋</span>Canales</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>🔗 <strong>Partnerships con integradores de seguridad</strong></li>
+                        <li>🔗 <strong>Conferencias y eventos de ciberseguridad</strong></li>
+                        <li>🔗 <strong>Marketing de contenidos técnicos</strong></li>
+                        <li>🔗 <strong>Referencias de clientes protegidos</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+                <h3><span class="icon icon-blue">📊</span>Distribución de Clientes</h3>
+                <div class="chart-container">
+                    <canvas id="distribucionClientesChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notificacion" class="notification"></div>
+
+    <script>
+        // Gestión de Pestañas
+        function mostrarTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            // Reset sub-tabs al cambiar a Estrategias
+            if (tabName === 'estrategias') {
+                mostrarSubTab('firewall');
+            }
+        }
+
+        // Gestión de Sub-Pestañas
+        function mostrarSubTab(subTabName) {
+            document.querySelectorAll('.sub-tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.sub-nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(subTabName).classList.add('active');
+            event.target.classList.add('active');
+            mostrarNotificacion(`📋 Mostrando ${event.target.textContent}`);
+        }
+
+        // Sistema de Notificaciones
+        function mostrarNotificacion(message, duration = 3000) {
+            const notificacion = document.getElementById('notificacion');
+            notificacion.textContent = message;
+            notificacion.classList.add('show');
+            setTimeout(() => {
+                notificacion.classList.remove('show');
+            }, duration);
+        }
+
+        // Gestión de Incidentes
+        function crearIncidente() {
+            const nombreIncidente = prompt('Nombre del nuevo incidente:');
+            if (nombreIncidente) {
+                mostrarNotificacion(`✅ Incidente "${nombreIncidente}" creado exitosamente`);
+                actualizarEstadoIncidentesChart();
+                actualizarDatosSistema();
+            }
+        }
+
+        // Gestión de Estrategias
+        function gestionarFirewall() {
+            mostrarNotificacion('🛡️ Abriendo gestión de Firewall...');
+        }
+
+        function gestionarPipeline() {
+            mostrarNotificacion('🔄 Accediendo al pipeline de seguridad...');
+        }
+
+        function gestionarArquitectura() {
+            mostrarNotificacion('🏗️ Abriendo panel de arquitectura...');
+        }
+
+        function gestionarCloud() {
+            mostrarNotificacion('☁️ Conectando con plataformas cloud...');
+        }
+
+        // Funciones de Automatización
+        function ejecutarPipeline(silent = false) {
+            if (!silent) mostrarNotificacion('🚀 Pipeline de detección iniciado...');
+            setTimeout(() => {
+                if (!silent) mostrarNotificacion('✅ Pipeline completado exitosamente');
+                actualizarMetricasSeguridadChart();
+                actualizarDatosSistema();
+            }, 2000);
+        }
+
+        function ejecutarPruebas(silent = false) {
+            if (!silent) mostrarNotificacion('🧪 Ejecutando suite de pruebas de seguridad...');
+            setTimeout(() => {
+                if (!silent) mostrarNotificacion('✅ Pruebas completadas: 1,247 exitosas, 0 fallidas');
+                actualizarDatosSistema();
+            }, 3000);
+        }
+
+        // Gestión de Clientes
+        function agregarCliente() {
+            const nombreCliente = prompt('Nombre del nuevo cliente:');
+            if (nombreCliente) {
+                mostrarNotificacion(`🎯 Cliente "${nombreCliente}" agregado al sistema`);
+                actualizarDistribucionClientesChart();
+                actualizarDatosSistema();
+            }
+        }
+
+        // Descargar PNG (Placeholder)
+        function descargarPNG() {
+            mostrarNotificacion('📸 Descargando contenido como PNG...');
+        }
+
+        // Descargar PDF
+        function descargarPDF() {
+            mostrarNotificacion('📄 Generando PDF...');
+            const element = document.querySelector('.container');
+            const opt = {
+                margin: 0.5,
+                filename: 'CyberShield_Pro_Report.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save().then(() => {
+                mostrarNotificacion('✅ PDF descargado exitosamente');
+            });
+        }
+
+        // Volver al Inicio
+        function volverInicio() {
+            window.location.href = 'index.html';
+        }
+
+        // Simulación de Métricas en Tiempo Real y Actualización del Sistema
+        function actualizarDatosSistema() {
+            // Actualizar Métricas del Tablero
+            const tiempoRespuesta = document.getElementById('tiempoRespuesta');
+            if (tiempoRespuesta) {
+                const current = parseFloat(tiempoRespuesta.textContent);
+                const variation = (Math.random() - 0.5) * 0.2;
+                tiempoRespuesta.textContent = Math.max(1.0, Math.min(3.0, current + variation)).toFixed(1);
+            }
+
+            const tasaDeteccion = document.getElementById('tasaDeteccion');
+            if (tasaDeteccion) {
+                const current = parseFloat(tasaDeteccion.textContent);
+                const variation = (Math.random() - 0.5) * 0.5;
+                tasaDeteccion.textContent = Math.max(95.0, Math.min(99.5, current + variation)).toFixed(1);
+            }
+
+            const cumplimiento = document.getElementById('cumplimiento');
+            if (cumplimiento) {
+                const current = parseInt(cumplimiento.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 2);
+                cumplimiento.textContent = Math.max(90, Math.min(99, current + variation));
+            }
+
+            const satisfaccion = document.getElementById('satisfaccion');
+            if (satisfaccion) {
+                const current = parseInt(satisfaccion.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 2);
+                satisfaccion.textContent = Math.max(85, Math.min(95, current + variation));
+            }
+
+            // Actualizar Actividad Reciente
+            const actividadReciente = document.getElementById('actividadReciente');
+            if (actividadReciente) {
+                const activities = [
+                    { avatar: 'JD', action: 'Incidente resuelto', project: 'Amenaza de Phishing', time: Math.floor(Math.random() * 5 + 1) + ' horas' },
+                    { avatar: 'MS', action: 'Escaneo completado', project: 'Red Interna', time: Math.floor(Math.random() * 5 + 1) + ' horas' },
+                    { avatar: 'AR', action: 'Vulnerabilidad parcheada', project: 'Sistema Operativo', time: Math.floor(Math.random() * 5 + 1) + ' horas' },
+                    { avatar: 'LP', action: 'Análisis forense', project: 'Fuga de Datos', time: Math.floor(Math.random() * 5 + 1) + ' horas' }
+                ];
+                const randomActivity = activities[Math.floor(Math.random() * activities.length)];
+                const newMember = document.createElement('div');
+                newMember.classList.add('team-member');
+                newMember.innerHTML = `
+                    <div class="avatar">${randomActivity.avatar}</div>
+                    <div>
+                        <strong>${randomActivity.action}</strong><br>
+                        <small>${randomActivity.project} - hace ${randomActivity.time}</small>
+                    </div>
+                `;
+                actividadReciente.prepend(newMember);
+                if (actividadReciente.children.length > 5) actividadReciente.removeChild(actividadReciente.lastChild);
+            }
+
+            // Actualizar Kanban de Incidentes
+            const pendientesColumn = document.getElementById('pendientesColumn');
+            const investigacionColumn = document.getElementById('investigacionColumn');
+            const mitigacionColumn = document.getElementById('mitigacionColumn');
+            const resueltosColumn = document.getElementById('resueltosColumn');
+            if (pendientesColumn && investigacionColumn && mitigacionColumn && resueltosColumn) {
+                const columns = [pendientesColumn, investigacionColumn, mitigacionColumn, resueltosColumn];
+                const tasks = document.querySelectorAll('.kanban-task');
+                if (tasks.length > 0) {
+                    const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
+                    const randomColumn = columns[Math.floor(Math.random() * columns.length)];
+                    randomColumn.appendChild(randomTask);
+                }
+                // Actualizar progreso en tareas de investigación
+                const invProgresses = investigacionColumn.querySelectorAll('.progress-fill');
+                invProgresses.forEach(progress => {
+                    const currentWidth = parseInt(progress.style.width);
+                    const variation = Math.floor((Math.random() - 0.5) * 10);
+                    progress.style.width = Math.max(0, Math.min(100, currentWidth + variation)) + '%';
+                });
+            }
+
+            // Actualizar Estrategias
+            const firewallProgress = document.getElementById('firewallProgress');
+            if (firewallProgress) {
+                const current = parseInt(firewallProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                firewallProgress.style.width = Math.max(80, Math.min(95, current + variation)) + '%';
+            }
+            const firewallAdoption = document.getElementById('firewallAdoption');
+            if (firewallAdoption) {
+                const current = parseInt(firewallAdoption.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 2);
+                firewallAdoption.textContent = Math.max(85, Math.min(95, current + variation));
+            }
+            const firewallSistemas = document.getElementById('firewallSistemas');
+            if (firewallSistemas) {
+                const current = parseInt(firewallSistemas.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 1);
+                firewallSistemas.textContent = Math.max(7, Math.min(10, current + variation));
+            }
+
+            const devsecopsProgress = document.getElementById('devsecopsProgress');
+            if (devsecopsProgress) {
+                const current = parseInt(devsecopsProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                devsecopsProgress.style.width = Math.max(80, Math.min(90, current + variation)) + '%';
+            }
+            const devsecopsCoverage = document.getElementById('devsecopsCoverage');
+            if (devsecopsCoverage) {
+                const current = parseInt(devsecopsCoverage.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 2);
+                devsecopsCoverage.textContent = Math.max(80, Math.min(90, current + variation));
+            }
+            const devsecopsProyectos = document.getElementById('devsecopsProyectos');
+            if (devsecopsProyectos) {
+                const current = parseInt(devsecopsProyectos.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 1);
+                devsecopsProyectos.textContent = Math.max(10, Math.min(15, current + variation));
+            }
+
+            const zeroTrustProgress = document.getElementById('zeroTrustProgress');
+            if (zeroTrustProgress) {
+                const current = parseInt(zeroTrustProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                zeroTrustProgress.style.width = Math.max(70, Math.min(80, current + variation)) + '%';
+            }
+            const zeroTrustMigration = document.getElementById('zeroTrustMigration');
+            if (zeroTrustMigration) {
+                const current = parseInt(zeroTrustMigration.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 2);
+                zeroTrustMigration.textContent = Math.max(70, Math.min(80, current + variation));
+            }
+            const zeroTrustSistemas = document.getElementById('zeroTrustSistemas');
+            if (zeroTrustSistemas) {
+                const current = parseInt(zeroTrustSistemas.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 1);
+                zeroTrustSistemas.textContent = Math.max(5, Math.min(8, current + variation));
+            }
+
+            const cloudProgress = document.getElementById('cloudProgress');
+            if (cloudProgress) {
+                const current = parseInt(cloudProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                cloudProgress.style.width = Math.max(75, Math.min(85, current + variation)) + '%';
+            }
+            const cloudScalability = document.getElementById('cloudScalability');
+            if (cloudScalability) {
+                const current = parseInt(cloudScalability.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 2);
+                cloudScalability.textContent = Math.max(75, Math.min(85, current + variation));
+            }
+
+            // Actualizar Tab de Métricas
+            const metricasTiempoRespuesta = document.getElementById('metricasTiempoRespuesta');
+            if (metricasTiempoRespuesta) {
+                const current = parseFloat(metricasTiempoRespuesta.textContent);
+                const variation = (Math.random() - 0.5) * 0.5;
+                metricasTiempoRespuesta.textContent = Math.max(1.0, Math.min(2.0, current + variation)).toFixed(1) + ' hrs';
+            }
+            const metricasRespuestaProgress = document.getElementById('metricasRespuestaProgress');
+            if (metricasRespuestaProgress) {
+                const current = parseInt(metricasRespuestaProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                metricasRespuestaProgress.style.width = Math.max(80, Math.min(90, current + variation)) + '%';
+            }
+
+            const metricasTasaAmenazas = document.getElementById('metricasTasaAmenazas');
+            if (metricasTasaAmenazas) {
+                const current = parseFloat(metricasTasaAmenazas.textContent);
+                const variation = (Math.random() - 0.5) * 0.1;
+                metricasTasaAmenazas.textContent = Math.max(0.2, Math.min(0.8, current + variation)).toFixed(1) + '%';
+            }
+            const metricasAmenazasProgress = document.getElementById('metricasAmenazasProgress');
+            if (metricasAmenazasProgress) {
+                const current = parseInt(metricasAmenazasProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                metricasAmenazasProgress.style.width = Math.max(15, Math.min(25, current + variation)) + '%';
+            }
+
+            const metricasDeteccion = document.getElementById('metricasDeteccion');
+            if (metricasDeteccion) {
+                const current = parseInt(metricasDeteccion.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 2);
+                metricasDeteccion.textContent = Math.max(95, Math.min(99, current + variation)) + ' SP';
+            }
+            const metricasDeteccionProgress = document.getElementById('metricasDeteccionProgress');
+            if (metricasDeteccionProgress) {
+                const current = parseInt(metricasDeteccionProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                metricasDeteccionProgress.style.width = Math.max(90, Math.min(100, current + variation)) + '%';
+            }
+
+            const metricasRecuperacion = document.getElementById('metricasRecuperacion');
+            if (metricasRecuperacion) {
+                const current = parseFloat(metricasRecuperacion.textContent);
+                const variation = (Math.random() - 0.5) * 0.3;
+                metricasRecuperacion.textContent = Math.max(0.5, Math.min(1.5, current + variation)).toFixed(1) + ' hrs';
+            }
+            const metricasRecuperacionProgress = document.getElementById('metricasRecuperacionProgress');
+            if (metricasRecuperacionProgress) {
+                const current = parseInt(metricasRecuperacionProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                metricasRecuperacionProgress.style.width = Math.max(70, Math.min(80, current + variation)) + '%';
+            }
+
+            const metricasSatisfaccion = document.getElementById('metricasSatisfaccion');
+            if (metricasSatisfaccion) {
+                const current = parseInt(metricasSatisfaccion.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 2);
+                metricasSatisfaccion.textContent = Math.max(85, Math.min(95, current + variation)) + ' NPS';
+            }
+            const metricasNPSProgress = document.getElementById('metricasNPSProgress');
+            if (metricasNPSProgress) {
+                const current = parseInt(metricasNPSProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                metricasNPSProgress.style.width = Math.max(80, Math.min(90, current + variation)) + '%';
+            }
+
+            const metricasROI = document.getElementById('metricasROI');
+            if (metricasROI) {
+                const current = parseInt(metricasROI.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 20);
+                metricasROI.textContent = Math.max(400, Math.min(500, current + variation)) + '%';
+            }
+            const metricasROIProgress = document.getElementById('metricasROIProgress');
+            if (metricasROIProgress) {
+                const current = parseInt(metricasROIProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                metricasROIProgress.style.width = Math.max(85, Math.min(95, current + variation)) + '%';
+            }
+
+            // Actualizar Capacidades del Equipo
+            const techEmergentesProgress = document.getElementById('techEmergentesProgress');
+            if (techEmergentesProgress) {
+                const current = parseInt(techEmergentesProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                techEmergentesProgress.style.width = Math.max(90, Math.min(100, current + variation)) + '%';
+            }
+
+            const metodologiaProgress = document.getElementById('metodologiaProgress');
+            if (metodologiaProgress) {
+                const current = parseInt(metodologiaProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                metodologiaProgress.style.width = Math.max(85, Math.min(95, current + variation)) + '%';
+            }
+            const proyectosExitosos = document.getElementById('proyectosExitosos');
+            if (proyectosExitosos) {
+                const current = parseInt(proyectosExitosos.textContent);
+                const variation = Math.floor(Math.random() * 5);
+                proyectosExitosos.textContent = current + variation;
+            }
+
+            const sociosProgress = document.getElementById('sociosProgress');
+            if (sociosProgress) {
+                const current = parseInt(sociosProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                sociosProgress.style.width = Math.max(80, Math.min(90, current + variation)) + '%';
+            }
+
+            // Actualizar Flujos de Ingresos del Equipo
+            const serviciosMedidaProgress = document.getElementById('serviciosMedidaProgress');
+            if (serviciosMedidaProgress) {
+                const current = parseInt(serviciosMedidaProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                serviciosMedidaProgress.style.width = Math.max(40, Math.min(50, current + variation)) + '%';
+            }
+
+            const suscripcionesProgress = document.getElementById('suscripcionesProgress');
+            if (suscripcionesProgress) {
+                const current = parseInt(suscripcionesProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                suscripcionesProgress.style.width = Math.max(25, Math.min(35, current + variation)) + '%';
+            }
+
+            const licenciasProgress = document.getElementById('licenciasProgress');
+            if (licenciasProgress) {
+                const current = parseInt(licenciasProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 3);
+                licenciasProgress.style.width = Math.max(10, Math.min(20, current + variation)) + '%';
+            }
+
+            const consultoriaProgress = document.getElementById('consultoriaProgress');
+            if (consultoriaProgress) {
+                const current = parseInt(consultoriaProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 3);
+                consultoriaProgress.style.width = Math.max(5, Math.min(15, current + variation)) + '%';
+            }
+
+            // Actualizar Automatización
+            const coberturaEscaneo = document.getElementById('coberturaEscaneo');
+            if (coberturaEscaneo) {
+                const current = parseInt(coberturaEscaneo.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 2);
+                coberturaEscaneo.textContent = Math.max(90, Math.min(95, current + variation));
+            }
+            const coberturaEscaneoProgress = document.getElementById('coberturaEscaneoProgress');
+            if (coberturaEscaneoProgress) {
+                coberturaEscaneoProgress.style.width = coberturaEscaneo.textContent + '%';
+            }
+
+            const pruebasAutomatizadas = document.getElementById('pruebasAutomatizadas');
+            if (pruebasAutomatizadas) {
+                const current = parseInt(pruebasAutomatizadas.textContent.replace(/,/g, ''));
+                const variation = Math.floor((Math.random() - 0.5) * 50);
+                pruebasAutomatizadas.textContent = (Math.max(1200, Math.min(1300, current + variation))).toLocaleString();
+            }
+            const pruebasAutomatizadasProgress = document.getElementById('pruebasAutomatizadasProgress');
+            if (pruebasAutomatizadasProgress) {
+                const current = parseInt(pruebasAutomatizadasProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                pruebasAutomatizadasProgress.style.width = Math.max(80, Math.min(90, current + variation)) + '%';
+            }
+
+            const pruebasRendimientoProgress = document.getElementById('pruebasRendimientoProgress');
+            if (pruebasRendimientoProgress) {
+                const current = parseInt(pruebasRendimientoProgress.style.width);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                pruebasRendimientoProgress.style.width = Math.max(70, Math.min(85, current + variation)) + '%';
+            }
+
+            // Actualizar Clientes
+            const usuariosSaaS = document.getElementById('usuariosSaaS');
+            if (usuariosSaaS) {
+                const current = parseInt(usuariosSaaS.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 10);
+                usuariosSaaS.textContent = Math.max(40, Math.min(60, current + variation));
+            }
+
+            const tiempoMercado = document.getElementById('tiempoMercado');
+            if (tiempoMercado) {
+                const current = parseInt(tiempoMercado.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                tiempoMercado.textContent = Math.max(55, Math.min(65, current + variation));
+            }
+
+            const reduccionAmenazas = document.getElementById('reduccionAmenazas');
+            if (reduccionAmenazas) {
+                const current = parseInt(reduccionAmenazas.textContent);
+                const variation = Math.floor((Math.random() - 0.5) * 5);
+                reduccionAmenazas.textContent = Math.max(75, Math.min(85, current + variation));
+            }
+
+            const proyectosProbados = document.getElementById('proyectosProbados');
+            if (proyectosProbados) {
+                const current = parseInt(proyectosProbados.textContent);
+                const variation = Math.floor(Math.random() * 5);
+                proyectosProbados.textContent = current + variation;
+            }
+
+            // Actualizar Charts
+            actualizarEstadoIncidentesChart();
+            actualizarTendenciasRendimientoChart();
+            actualizarMetricasSeguridadChart();
+            actualizarDistribucionClientesChart();
+        }
+
+        // Funcionalidad Drag and Drop para Kanban
+        let draggedElement = null;
+
+        // Inicialización de Charts
+        let estadoIncidentesChart, tendenciasRendimientoChart, estructuraCostosChart, metricasSeguridadChart, distribucionClientesChart;
+
+        function inicializarCharts() {
+            // Chart de Estado de Incidentes (Bar)
+            const estadoIncidentesCtx = document.getElementById('estadoIncidentesChart')?.getContext('2d');
+            if (estadoIncidentesCtx) {
+                estadoIncidentesChart = new Chart(estadoIncidentesCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Activos', 'En Investigación', 'Resueltos'],
+                        datasets: [{
+                            label: 'Incidentes',
+                            data: [12, 8, 25],
+                            backgroundColor: ['#48bb78', '#ed8936', '#2b6cb0'],
+                            borderColor: ['#2f855a', '#c05621', '#2c5282'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Número de Incidentes' }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            title: { display: true, text: 'Estado de Incidentes' }
+                        }
+                    }
+                });
+            }
+
+            // Chart de Tendencias de Rendimiento (Line)
+            const tendenciasRendimientoCtx = document.getElementById('tendenciasRendimientoChart')?.getContext('2d');
+            if (tendenciasRendimientoCtx) {
+                tendenciasRendimientoChart = new Chart(tendenciasRendimientoCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+                        datasets: [
+                            {
+                                label: 'Tiempo de Respuesta (%)',
+                                data: [100, 90, 85, 85],
+                                borderColor: '#2b6cb0',
+                                backgroundColor: 'rgba(43, 108, 176, 0.2)',
+                                fill: true
+                            },
+                            {
+                                label: 'Detecciones (%)',
+                                data: [100, 110, 120, 125],
+                                borderColor: '#48bb78',
+                                backgroundColor: 'rgba(72, 187, 120, 0.2)',
+                                fill: true
+                            },
+                            {
+                                label: 'Puntuación de Seguridad (%)',
+                                data: [95, 96, 97, 98.2],
+                                borderColor: '#9f7aea',
+                                backgroundColor: 'rgba(159, 122, 234, 0.2)',
+                                fill: true
+                            },
+                            {
+                                label: 'Automatización (%)',
+                                data: [80, 82, 85, 87],
+                                borderColor: '#ed8936',
+                                backgroundColor: 'rgba(237, 137, 54, 0.2)',
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Porcentaje' }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: true, position: 'top' },
+                            title: { display: true, text: 'Tendencias de Rendimiento' }
+                        }
+                    }
+                });
+            }
+
+            // Chart de Estructura de Costos (Bar)
+            const estructuraCostosCtx = document.getElementById('estructuraCostosChart')?.getContext('2d');
+            if (estructuraCostosCtx) {
+                estructuraCostosChart = new Chart(estructuraCostosCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Salarios', 'Infraestructura', 'Licencias', 'Marketing'],
+                        datasets: [{
+                            label: 'Costos (%)',
+                            data: [60, 20, 10, 10],
+                            backgroundColor: ['#2b6cb0', '#48bb78', '#9f7aea', '#ed8936'],
+                            borderColor: ['#2c5282', '#2f855a', '#6b46c1', '#c05621'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Porcentaje' }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            title: { display: true, text: 'Estructura de Costos' }
+                        }
+                    }
+                });
+            }
+
+            // Chart de Métricas de Seguridad (Doughnut)
+            const metricasSeguridadCtx = document.getElementById('metricasSeguridadChart')?.getContext('2d');
+            if (metricasSeguridadCtx) {
+                metricasSeguridadChart = new Chart(metricasSeguridadCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Frecuencia de Detección', 'Tiempo de Respuesta', 'Tiempo de Recuperación', 'Tasa de Fallos'],
+                        datasets: [{
+                            data: [15, 1.5, 0.8, 0.5],
+                            backgroundColor: ['#48bb78', '#2b6cb0', '#9f7aea', '#f56565'],
+                            borderColor: ['#2f855a', '#2c5282', '#6b46c1', '#c53030'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: true, position: 'bottom' },
+                            title: { display: true, text: 'Métricas de Seguridad' }
+                        }
+                    }
+                });
+            }
+
+            // Chart de Distribución de Clientes (Pie)
+            const distribucionClientesCtx = document.getElementById('distribucionClientesChart')?.getContext('2d');
+            if (distribucionClientesCtx) {
+                distribucionClientesChart = new Chart(distribucionClientesCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Startups', 'Transformación Digital', 'Fintech/E-commerce', 'Corporaciones'],
+                        datasets: [{
+                            data: [2, 2, 2, 2],
+                            backgroundColor: ['#2b6cb0', '#48bb78', '#9f7aea', '#ed8936'],
+                            borderColor: ['#2c5282', '#2f855a', '#6b46c1', '#c05621'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: true, position: 'bottom' },
+                            title: { display: true, text: 'Distribución de Clientes' }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Actualizar Charts Dinámicamente
+        function actualizarEstadoIncidentesChart() {
+            if (estadoIncidentesChart) {
+                estadoIncidentesChart.data.datasets[0].data = [
+                    Math.floor(Math.random() * 5 + 10), // Activos
+                    Math.floor(Math.random() * 3 + 6),  // En Investigación
+                    Math.floor(Math.random() * 5 + 20)  // Resueltos
+                ];
+                estadoIncidentesChart.update();
+            }
+        }
+
+        function actualizarTendenciasRendimientoChart() {
+            if (tendenciasRendimientoChart) {
+                tendenciasRendimientoChart.data.datasets[0].data = [
+                    100, 90, 85, Math.max(80, Math.min(90, 85 + (Math.random() - 0.5) * 5))
+                ];
+                tendenciasRendimientoChart.data.datasets[1].data = [
+                    100, 110, 120, Math.max(110, Math.min(130, 125 + (Math.random() - 0.5) * 5))
+                ];
+                tendenciasRendimientoChart.data.datasets[2].data = [
+                    95, 96, 97, Math.max(95, Math.min(100, 98.2 + (Math.random() - 0.5) * 2))
+                ];
+                tendenciasRendimientoChart.data.datasets[3].data = [
+                    80, 82, 85, Math.max(80, Math.min(90, 87 + (Math.random() - 0.5) * 3))
+                ];
+                tendenciasRendimientoChart.update();
+            }
+        }
+
+        function actualizarMetricasSeguridadChart() {
+            if (metricasSeguridadChart) {
+                metricasSeguridadChart.data.datasets[0].data = [
+                    Math.max(10, Math.min(20, 15 + (Math.random() - 0.5) * 2)), // Frecuencia de Detección
+                    Math.max(1, Math.min(2, 1.5 + (Math.random() - 0.5) * 0.5)), // Tiempo de Respuesta
+                    Math.max(0.5, Math.min(1, 0.8 + (Math.random() - 0.5) * 0.3)),  // Tiempo de Recuperación
+                    Math.max(0.2, Math.min(0.8, 0.5 + (Math.random() - 0.5) * 0.1)) // Tasa de Fallos
+                ];
+                metricasSeguridadChart.update();
+            }
+        }
+
+        function actualizarDistribucionClientesChart() {
+            if (distribucionClientesChart) {
+                distribucionClientesChart.data.datasets[0].data = [
+                    Math.floor(Math.random() * 2 + 1), // Startups
+                    Math.floor(Math.random() * 2 + 1), // Transformación Digital
+                    Math.floor(Math.random() * 2 + 1), // Fintech/E-commerce
+                    Math.floor(Math.random() * 2 + 1)  // Corporaciones
+                ];
+                distribucionClientesChart.update();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const kanbanTasks = document.querySelectorAll('.kanban-task');
+            const kanbanColumns = document.querySelectorAll('.kanban-column');
+
+            kanbanTasks.forEach(task => {
+                task.addEventListener('dragstart', function(e) {
+                    draggedElement = this;
+                    this.style.opacity = '0.5';
+                });
+
+                task.addEventListener('dragend', function(e) {
+                    this.style.opacity = '';
+                    draggedElement = null;
+                });
+            });
+
+            kanbanColumns.forEach(column => {
+                column.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                });
+
+                column.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    if (draggedElement) {
+                        this.appendChild(draggedElement);
+                        mostrarNotificacion('📋 Incidente movido exitosamente');
+                        actualizarEstadoIncidentesChart();
+                        actualizarDatosSistema();
+                    }
+                });
+            });
+
+            inicializarCharts();
+            setInterval(actualizarDatosSistema, 10000); // Actualización automática de datos cada 10 segundos
+            setInterval(() => {
+                // Simular presionar botones cada 10 segundos, alternando visibilidad para variedad
+                const random = Math.random();
+                if (random > 0.5) {
+                    ejecutarPipeline(true); // Silencioso
+                    ejecutarPruebas(true); // Silencioso
+                } else {
+                    ejecutarPipeline(false); // Visible ocasionalmente
+                    setTimeout(() => ejecutarPruebas(false), 2000); // Visible con delay
+                }
+                mostrarNotificacion('🔄 Actualización automática del sistema completada');
+            }, 10000); // Simulación de botones cada 10 segundos
+            mostrarNotificacion('🛡️ Bienvenido a CyberShield Pro - Sistema activo y funcionando');
+        });
+    </script>
+</body>
+</html>

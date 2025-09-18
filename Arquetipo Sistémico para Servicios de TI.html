@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lean Canvas - Desarrollo de Software y Ciberseguridad</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .industry-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        .industry-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .software-btn {
+            background: linear-gradient(135deg, #3B82F6, #1E40AF);
+        }
+
+        .cybersecurity-btn {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+        }
+
+        .industry-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .industry-btn.active {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #10B981, #059669);
+            margin-left: 15px;
+        }
+
+        .pdf-btn {
+            background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+            margin-left: 15px;
+        }
+
+        .home-btn {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+            margin-left: 15px;
+        }
+
+        .lean-canvas {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 0.8s ease-out 0.8s forwards;
+        }
+
+        .canvas-header {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            transition: all 0.5s ease;
+        }
+
+        .software .canvas-header {
+            background: linear-gradient(135deg, #3B82F6, #1E40AF);
+        }
+
+        .cybersecurity .canvas-header {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+        }
+
+        .canvas-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            grid-template-rows: auto auto auto;
+            border-collapse: collapse;
+        }
+
+        .canvas-section {
+            border: 2px solid #e5e7eb;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .canvas-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .section-header {
+            padding: 12px 16px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            color: white;
+            background: #6B7280;
+            position: relative;
+        }
+
+        .problem .section-header { background: #8B5CF6; }
+        .solution .section-header { background: #10B981; }
+        .key-metrics .section-header { background: #F59E0B; }
+        .unique-value .section-header { background: #EF4444; }
+        .unfair-advantage .section-header { background: #8B5CF6; }
+        .channels .section-header { background: #06B6D4; }
+        .customer-segments .section-header { background: #F59E0B; }
+        .cost-structure .section-header { background: #3B82F6; }
+        .revenue-streams .section-header { background: #F59E0B; }
+
+        .section-content {
+            padding: 16px;
+            flex: 1;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            background: white;
+        }
+
+        .section-item {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 3px solid #e5e7eb;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideInLeft 0.5s ease-out forwards;
+        }
+
+        .section-item:hover {
+            background: #e3f2fd;
+            border-left-color: #2196f3;
+            transform: translateX(5px);
+        }
+
+        .problem { grid-column: 1; grid-row: 1; }
+        .solution { grid-column: 2; grid-row: 1; }
+        .key-metrics { grid-column: 3; grid-row: 1; }
+        .unique-value { grid-column: 4; grid-row: 1 / 3; min-height: 400px; }
+        .unfair-advantage { grid-column: 5; grid-row: 1; }
+        .channels { grid-column: 5; grid-row: 2; }
+        .customer-segments { grid-column: 5; grid-row: 3; }
+        .cost-structure { grid-column: 1 / 4; grid-row: 3; }
+        .revenue-streams { grid-column: 4; grid-row: 3; }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @media (max-width: 1200px) {
+            .canvas-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-rows: auto auto auto auto;
+            }
+            
+            .problem { grid-column: 1; grid-row: 1; }
+            .solution { grid-column: 2; grid-row: 1; }
+            .key-metrics { grid-column: 3; grid-row: 1; }
+            .unique-value { grid-column: 1 / 4; grid-row: 2; min-height: 200px; }
+            .unfair-advantage { grid-column: 1; grid-row: 3; }
+            .channels { grid-column: 2; grid-row: 3; }
+            .customer-segments { grid-column: 3; grid-row: 3; }
+            .cost-structure { grid-column: 1 / 3; grid-row: 4; }
+            .revenue-streams { grid-column: 3; grid-row: 4; }
+        }
+
+        @media (max-width: 768px) {
+            .canvas-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(9, auto);
+            }
+            
+            .canvas-section {
+                grid-column: 1 !important;
+                grid-row: auto !important;
+                min-height: 150px !important;
+            }
+            
+            .industry-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .industry-btn {
+                width: 250px;
+            }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .fade-transition {
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .fade-out {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">LEAN CANVAS</h1>
+            <p class="subtitle">Arquetipo Sistémico para Servicios de TI</p>
+            
+            <div class="industry-selector">
+                <button class="industry-btn software-btn" onclick="switchIndustry('software')">
+                    🔧 Desarrollo de Software
+                </button>
+                <button class="industry-btn cybersecurity-btn" onclick="switchIndustry('cybersecurity')">
+                    🛡️ Ciberseguridad
+                </button>
+                <button class="industry-btn download-btn" onclick="downloadCanvas()">
+                    <span id="downloadText">📥 Descargar PNG</span>
+                </button>
+                <button class="industry-btn pdf-btn" onclick="downloadPDF()">
+                    <span id="pdfDownloadText">📄 Descargar PDF</span>
+                </button>
+                <button class="industry-btn home-btn" onclick="goToHome()">
+                    🏠 Volver a Inicio
+                </button>
+            </div>
+        </div>
+
+        <div class="lean-canvas fade-transition" id="leanCanvas">
+            <div class="canvas-header" id="canvasHeader">
+                LEAN CANVAS - DESARROLLO DE SOFTWARE
+            </div>
+            
+            <div class="canvas-grid" id="canvasGrid">
+                <div class="canvas-section problem">
+                    <div class="section-header">Problema</div>
+                    <div class="section-content" id="problemContent"></div>
+                </div>
+                <div class="canvas-section solution">
+                    <div class="section-header">Solución</div>
+                    <div class="section-content" id="solutionContent"></div>
+                </div>
+                <div class="canvas-section key-metrics">
+                    <div class="section-header">Métricas Clave</div>
+                    <div class="section-content" id="metricsContent"></div>
+                </div>
+                <div class="canvas-section unique-value">
+                    <div class="section-header">Propuesta de Valor Única</div>
+                    <div class="section-content" id="valueContent"></div>
+                </div>
+                <div class="canvas-section unfair-advantage">
+                    <div class="section-header">Ventaja Injusta</div>
+                    <div class="section-content" id="advantageContent"></div>
+                </div>
+                <div class="canvas-section channels">
+                    <div class="section-header">Canales</div>
+                    <div class="section-content" id="channelsContent"></div>
+                </div>
+                <div class="canvas-section customer-segments">
+                    <div class="section-header">Segmentos de Clientes</div>
+                    <div class="section-content" id="segmentsContent"></div>
+                </div>
+                <div class="canvas-section cost-structure">
+                    <div class="section-header">Estructura de Costos</div>
+                    <div class="section-content" id="costsContent"></div>
+                </div>
+                <div class="canvas-section revenue-streams">
+                    <div class="section-header">Flujo de Ingresos</div>
+                    <div class="section-content" id="revenueContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        const { jsPDF } = window.jspdf;
+        const canvasData = {
+            software: {
+                title: "LEAN CANVAS - DESARROLLO DE SOFTWARE",
+                className: "software",
+                sections: {
+                    problem: [
+                        "Procesos de desarrollo desorganizados y lentos",
+                        "Falta de metodologías ágiles implementadas",
+                        "Integración compleja entre sistemas legacy",
+                        "Escalabilidad limitada de aplicaciones actuales",
+                        "Testing manual propenso a errores"
+                    ],
+                    solution: [
+                        "Implementación de DevOps y CI/CD pipelines",
+                        "Adopción de metodologías ágiles (Scrum/Kanban)",
+                        "Arquitecturas de microservicios y APIs",
+                        "Automatización de testing y deployment",
+                        "Plataformas cloud-native escalables"
+                    ],
+                    metrics: [
+                        "Tiempo de desarrollo (lead time)",
+                        "Tasa de defectos en producción",
+                        "Velocidad del equipo (story points/sprint)",
+                        "Tiempo de recuperación ante fallos (MTTR)",
+                        "Satisfacción del cliente (NPS)"
+                    ],
+                    value: [
+                        "Aceleración del time-to-market hasta 50%",
+                        "Reducción de bugs en producción (90%)",
+                        "Escalabilidad automática y bajo demanda",
+                        "Experiencia de usuario superior y moderna",
+                        "ROI medible y transparente en cada sprint"
+                    ],
+                    advantage: [
+                        "Equipo certificado en tecnologías emergentes",
+                        "Framework propietario de desarrollo",
+                        "Partnerships exclusivos con cloud providers",
+                        "Metodología probada en +100 proyectos"
+                    ],
+                    channels: [
+                        "Partnerships con integradores tecnológicos",
+                        "Conferencias y eventos tech especializados",
+                        "Marketing de contenidos técnicos (blogs/webinars)",
+                        "Referencias de clientes satisfechos"
+                    ],
+                    segments: [
+                        "Startups tecnológicas en crecimiento",
+                        "Empresas en transformación digital",
+                        "E-commerce y fintech emergentes",
+                        "Corporaciones con sistemas legacy"
+                    ],
+                    costs: [
+                        "Salarios equipo técnico especializado (60%)",
+                        "Infraestructura cloud y herramientas (20%)",
+                        "Licencias de software y plataformas (10%)",
+                        "Marketing, ventas y capacitación (10%)"
+                    ],
+                    revenue: [
+                        "Desarrollo a medida (project-based)",
+                        "Retainer mensual de soporte y mantenimiento",
+                        "Licenciamiento de frameworks propietarios",
+                        "Consultoría y auditorías técnicas especializadas"
+                    ]
+                }
+            },
+            cybersecurity: {
+                title: "LEAN CANVAS - CIBERSEGURIDAD",
+                className: "cybersecurity",
+                sections: {
+                    problem: [
+                        "Aumento exponencial de ciberataques dirigidos",
+                        "Falta de expertise interno en seguridad",
+                        "Cumplimiento regulatorio cada vez más complejo",
+                        "Vulnerabilidades en sistemas legacy críticos",
+                        "Respuesta lenta ante incidentes de seguridad"
+                    ],
+                    solution: [
+                        "SOC (Security Operations Center) 24/7/365",
+                        "Evaluaciones proactivas de vulnerabilidades",
+                        "Implementación de arquitectura Zero Trust",
+                        "Training especializado para empleados",
+                        "Threat intelligence y análisis predictivo"
+                    ],
+                    metrics: [
+                        "Tiempo de detección de amenazas (MTTD)",
+                        "Tiempo de respuesta a incidentes (MTTR)",
+                        "Número de vulnerabilidades críticas cerradas",
+                        "Nivel de cumplimiento regulatorio (%)",
+                        "Reducción de superficie de ataque"
+                    ],
+                    value: [
+                        "Protección proactiva 24/7 contra amenazas",
+                        "Reducción del riesgo empresarial hasta 95%",
+                        "Cumplimiento automático de normativas",
+                        "Tranquilidad y continuidad del negocio",
+                        "ROI comprobado en prevención de pérdidas"
+                    ],
+                    advantage: [
+                        "Threat intelligence propietaria y actualizada",
+                        "Equipo certificado (CISSP, CISM, CEH)",
+                        "Alianzas estratégicas con vendors globales",
+                        "Experiencia real en respuesta a incidentes"
+                    ],
+                    channels: [
+                        "Eventos de seguridad y compliance",
+                        "Partnerships con consultoras de riesgo",
+                        "Webinars educativos sobre amenazas",
+                        "Referrals de partners tecnológicos"
+                    ],
+                    segments: [
+                        "Instituciones financieras y bancarias",
+                        "Empresas de healthcare y salud",
+                        "Gobierno y sector público crítico",
+                        "E-commerce y retail con datos sensibles"
+                    ],
+                    costs: [
+                        "Equipo especializado en seguridad (50%)",
+                        "Herramientas SIEM, SOAR y licencias (25%)",
+                        "Infraestructura de monitoreo 24/7 (15%)",
+                        "Certificaciones y training continuo (10%)"
+                    ],
+                    revenue: [
+                        "Servicios gestionados de seguridad (MSS)",
+                        "Auditorías y penetration testing",
+                        "Consultoría especializada en compliance",
+                        "Retainer de incident response y forense"
+                    ]
+                }
+            }
+        };
+
+        let currentIndustry = 'software';
+
+        function renderContent(industry) {
+            const data = canvasData[industry];
+            const canvas = document.getElementById('leanCanvas');
+            const header = document.getElementById('canvasHeader');
+            
+            canvas.className = `lean-canvas fade-transition ${data.className}`;
+            header.textContent = data.title;
+
+            renderSection('problemContent', data.sections.problem);
+            renderSection('solutionContent', data.sections.solution);
+            renderSection('metricsContent', data.sections.metrics);
+            renderSection('valueContent', data.sections.value);
+            renderSection('advantageContent', data.sections.advantage);
+            renderSection('channelsContent', data.sections.channels);
+            renderSection('segmentsContent', data.sections.segments);
+            renderSection('costsContent', data.sections.costs);
+            renderSection('revenueContent', data.sections.revenue);
+        }
+
+        function renderSection(elementId, items) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = '';
+            
+            items.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'section-item';
+                div.style.animationDelay = `${index * 0.1}s`;
+                div.textContent = item;
+                element.appendChild(div);
+            });
+        }
+
+        function switchIndustry(industry) {
+            if (industry === currentIndustry) return;
+
+            const canvas = document.getElementById('leanCanvas');
+            const buttons = document.querySelectorAll('.industry-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            if (industry === 'software') {
+                buttons[0].classList.add('active');
+            } else {
+                buttons[1].classList.add('active');
+            }
+
+            canvas.classList.add('fade-out');
+            
+            setTimeout(() => {
+                currentIndustry = industry;
+                renderContent(industry);
+                canvas.classList.remove('fade-out');
+            }, 250);
+        }
+
+        async function downloadCanvas() {
+            const downloadText = document.getElementById('downloadText');
+            const originalText = downloadText.textContent;
+            
+            downloadText.innerHTML = '<div class="loading-spinner"></div>Generando...';
+            
+            try {
+                const canvas = document.getElementById('leanCanvas');
+                const canvasElement = await html2canvas(canvas, {
+                    backgroundColor: '#ffffff',
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    width: canvas.scrollWidth,
+                    height: canvas.scrollHeight
+                });
+                
+                const link = document.createElement('a');
+                link.download = `lean-canvas-${currentIndustry}-${new Date().toISOString().split('T')[0]}.png`;
+                link.href = canvasElement.toDataURL('image/png');
+                link.click();
+                
+            } catch (error) {
+                console.error('Error al descargar:', error);
+                alert('Error al generar la imagen. Por favor, intenta nuevamente.');
+            } finally {
+                downloadText.textContent = originalText;
+            }
+        }
+
+        async function downloadPDF() {
+            const pdfText = document.getElementById('pdfDownloadText');
+            const originalText = pdfText.textContent;
+            
+            pdfText.innerHTML = '<div class="loading-spinner"></div>Generando PDF...';
+            
+            try {
+                const canvas = document.getElementById('leanCanvas');
+                const canvasElement = await html2canvas(canvas, {
+                    backgroundColor: '#ffffff',
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    width: canvas.scrollWidth,
+                    height: canvas.scrollHeight
+                });
+                
+                const doc = new jsPDF({
+                    orientation: canvas.scrollWidth > canvas.scrollHeight ? 'landscape' : 'portrait',
+                    unit: 'px',
+                    format: [canvas.scrollWidth, canvas.scrollHeight]
+                });
+                
+                const imgData = canvasElement.toDataURL('image/png');
+                doc.addImage(imgData, 'PNG', 0, 0, canvas.scrollWidth, canvas.scrollHeight);
+                
+                doc.save(`lean-canvas-${currentIndustry}-${new Date().toISOString().split('T')[0]}.pdf`);
+                
+            } catch (error) {
+                console.error('Error al generar PDF:', error);
+                alert('Error al generar el PDF. Por favor, intenta nuevamente.');
+            } finally {
+                pdfText.textContent = originalText;
+            }
+        }
+
+        function goToHome() {
+            window.location.href = 'Lean Canvas.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderContent('software');
+            document.querySelector('.software-btn').classList.add('active');
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            const sections = document.querySelectorAll('.canvas-section');
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const deltaX = (e.clientX - centerX) * 0.01;
+                const deltaY = (e.clientY - centerY) * 0.01;
+                
+                section.style.transform = `perspective(1000px) rotateX(${deltaY}deg) rotateY(${deltaX}deg)`;
+            });
+        });
+
+        document.addEventListener('mouseleave', () => {
+            const sections = document.querySelectorAll('.canvas-section');
+            sections.forEach(section => {
+                section.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>

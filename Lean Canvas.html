@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Lean Canvas Futurista</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', Arial, sans-serif;
+            background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+            color: #e0e1dd;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(69, 162, 255, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            background: rgba(27, 38, 59, 0.95);
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 0 40px rgba(69, 162, 255, 0.4);
+            animation: glowPulse 3s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        .title {
+            font-size: 3.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #45a2ff 0%, #ff2e63 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            animation: neonFlicker 2s ease-in-out infinite;
+            text-shadow: 0 0 15px #45a2ff, 0 0 30px #ff2e63;
+        }
+
+        .description {
+            font-size: 1.3rem;
+            color: #a5b4cb;
+            margin-bottom: 40px;
+            line-height: 1.7;
+            animation: fadeInUp 1s ease-out 0.3s both;
+            text-shadow: 0 0 5px rgba(69, 162, 255, 0.3);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .feature-card {
+            background: rgba(14, 27, 42, 0.85);
+            border: 2px solid #45a2ff;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.9) translateY(30px);
+            animation: zoomIn 0.7s ease-out forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(69, 162, 255, 0.3) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0.2s; }
+        .feature-card:nth-child(2) { animation-delay: 0.3s; }
+        .feature-card:nth-child(3) { animation-delay: 0.4s; }
+        .feature-card:nth-child(4) { animation-delay: 0.5s; }
+        .feature-card:nth-child(5) { animation-delay: 0.6s; }
+        .feature-card:nth-child(6) { animation-delay: 0.7s; }
+
+        .feature-card:hover {
+            transform: scale(1.08) translateY(-8px);
+            box-shadow: 0 0 25px rgba(69, 162, 255, 0.6), 0 0 50px rgba(255, 46, 99, 0.4);
+            border-color: #ff2e63;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #45a2ff;
+            margin-bottom: 15px;
+            animation: pulseIcon 2s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(69, 162, 255, 0.5);
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #e0e1dd;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        .feature-desc {
+            font-size: 0.95rem;
+            color: #a5b4cb;
+            line-height: 1.6;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            animation: fadeIn 1s ease-out 0.9s both;
+        }
+
+        .canvas-btn, .start-btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Orbitron', Arial, sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .canvas-btn {
+            background: linear-gradient(135deg, #45a2ff, #1e40af);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #ff2e63, #c2185b);
+        }
+
+        .canvas-btn::before, .start-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .canvas-btn:hover::before, .start-btn::before {
+            left: 100%;
+        }
+
+        .canvas-btn:hover, .start-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 25px rgba(69, 162, 255, 0.6);
+        }
+
+        .button-icon {
+            font-size: 1.3rem;
+            transition: transform 0.4s ease;
+        }
+
+        .canvas-btn:hover .button-icon, .start-btn:hover .button-icon {
+            transform: rotate(360deg) scale(1.2);
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 40px rgba(69, 162, 255, 0.4); }
+            50% { box-shadow: 0 0 60px rgba(69, 162, 255, 0.6); }
+        }
+
+        @keyframes neonFlicker {
+            0%, 100% { opacity: 1; text-shadow: 0 0 15px #45a2ff, 0 0 30px #ff2e63; }
+            50% { opacity: 0.85; text-shadow: 0 0 25px #45a2ff, 0 0 40px #ff2e63; }
+            70% { opacity: 0.9; text-shadow: 0 0 20px #ff2e63, 0 0 35px #45a2ff; }
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.9) translateY(30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulseIcon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh); opacity: 0.5; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            .title {
+                font-size: 2.2rem;
+            }
+
+            .description {
+                font-size: 1rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .canvas-btn, .start-btn {
+                width: 280px;
+                padding: 12px 20px;
+            }
+
+            .feature-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="container">
+        <h1 class="title">Lean Canvas Futurista</h1>
+        <p class="description">
+            Embárcate en una experiencia de planificación estratégica revolucionaria. Nuestra plataforma de vanguardia transforma la creación de Lean Canvas para Desarrollo de Software y Ciberseguridad en una aventura tecnológica inmersiva.
+        </p>
+
+        <div class="features">
+            <div class="feature-card">
+                <i class="fas fa-rocket feature-icon"></i>
+                <div class="feature-title">Interfaz Holográfica</div>
+                <div class="feature-desc">Navega a través de una interfaz 3D interactiva con animaciones fluidas y efectos neon.</div>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-brain feature-icon"></i>
+                <div class="feature-title">Análisis Inteligente</div>
+                <div class="feature-desc">Insights generados por IA para optimizar estrategias en tiempo real.</div>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-download feature-icon"></i>
+                <div class="feature-title">Exportación Avanzada</div>
+                <div class="feature-desc">Genera archivos PNG y PDF con calidad profesional para presentaciones impactantes.</div>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-mobile-alt feature-icon"></i>
+                <div class="feature-title">Adaptabilidad Universal</div>
+                <div class="feature-desc">Diseño responsivo que se adapta a cualquier dispositivo, desde móviles hasta pantallas holográficas.</div>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt feature-icon"></i>
+                <div class="feature-title">Seguridad Futurista</div>
+                <div class="feature-desc">Protección de datos con cifrado de última generación para tus estrategias.</div>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-globe feature-icon"></i>
+                <div class="feature-title">Colaboración Global</div>
+                <div class="feature-desc">Comparte y colabora en tiempo real con equipos en cualquier parte del universo.</div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="canvas-btn" onclick="goToCanvas()">
+                <i class="fas fa-chart-line button-icon"></i>
+                <span>Ir al Lean Canvas</span>
+            </button>
+            <button class="start-btn" onclick="goToStart()">
+                <i class="fas fa-home button-icon"></i>
+                <span>Volver al Inicio</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function goToCanvas() {
+            window.location.href = 'Arquetipo Sistémico para Servicios de TI.html';
+        }
+
+        function goToStart() {
+            window.location.href = 'index.html';
+        }
+
+        // Dynamic hover effect for feature cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const deltaX = (e.clientX - centerX) * 0.04;
+                const deltaY = (e.clientY - centerY) * 0.04;
+                
+                card.style.transform = `perspective(1000px) rotateX(${deltaY}deg) rotateY(${deltaX}deg) scale(1.08) translateY(-8px)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'scale(1) translateY(0)';
+            });
+        });
+
+        // Create animated particles
+        const particlesContainer = document.getElementById('particles');
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            const size = Math.random() * 8 + 4;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+            particle.style.animationDelay = `${Math.random() * 5}s`;
+            particlesContainer.appendChild(particle);
+            setTimeout(() => particle.remove(), 15000);
+        }
+
+        setInterval(createParticle, 300);
+    </script>
+</body>
+</html>
